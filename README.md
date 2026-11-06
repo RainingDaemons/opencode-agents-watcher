@@ -40,29 +40,35 @@ The utility is designed to observe sub-agent behavior, provide guarded restart c
 
 ## Installation
 
-Add to `~/.config/opencode/opencode.json` (global) or `opencode.json` (project).
+If you have OpenCode 1.18.0 or later, install the plugin with:
 
-For OpenCode 1.18.0 or later:
-
-```json
-{
-  "plugin": ["opencode-models-manager@opencode-v1"]
-}
+```
+opencode plugin add opencode-agents-watcher@0.1.0
 ```
 
 For OpenCode v2:
 
 > WIP
 
-### Manual installation
+## Manual installation
 
-Add the absolute source path to `tui.json` globally at `~/.config/opencode/tui.json` or per project at `.opencode/tui.json`:
+Add to `~/.config/opencode/opencode.json` (global) or `opencode.json` (project).
+
+If you have OpenCode 1.18.0 or later, install the plugin with:
 
 ```json
 {
-  "plugin": ["./your-repo/src/index.tsx"]
+  "plugin": ["opencode-agents-watcher@0.1.0"]
 }
 ```
+
+For OpenCode v2:
+
+```json
+WIP
+```
+
+Add the absolute source path to `tui.json` globally at `~/.config/opencode/tui.json` or per project at `.opencode/tui.json`.
 
 Restart OpenCode after changing the configuration.
 
