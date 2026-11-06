@@ -1,0 +1,43 @@
+{
+  "name": "opencode-agents-watcher",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "OpenCode TUI plugin — watch sub-agent status and recovery in the sidebar",
+  "author": "RainingDaemons",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RainingDaemons/opencode-agents-watcher.git"
+  },
+  "bugs": {
+    "url": "https://github.com/RainingDaemons/opencode-agents-watcher/issues"
+  },
+  "homepage": "https://github.com/RainingDaemons/opencode-agents-watcher",
+  "keywords": [
+    "opencode",
+    "opencode-plugin",
+    "tui",
+    "subagent",
+    "sidebar"
+  ],
+  "engines": {
+    "opencode": ">=1.18.0"
+  },
+  "exports": {
+    "./tui": "./dist/index.js"
+  },
+  "files": [
+    "dist",
+    "assets",
+    "monitor.json.example"
+  ],
+  "scripts": {
+    "build": "bun run script/build.mjs",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "@opencode-ai/plugin": "^1.18.1",
+    "solid-js": "^1.9.12",
+    "@opentui/solid": "^0.5.1"
+  }
+}
