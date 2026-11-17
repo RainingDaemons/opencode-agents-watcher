@@ -1,6 +1,6 @@
 {
   "name": "opencode-agents-watcher",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "type": "module",
   "description": "OpenCode TUI plugin - watch sub-agent status and recovery in the sidebar",
   "author": "RainingDaemons",
@@ -21,9 +21,10 @@
     "sidebar"
   ],
   "engines": {
-    "opencode": ">=2.0.0"
+    "opencode": ">=2.3.0"
   },
   "exports": {
+    ".": "./dist/server.js",
     "./tui": "./dist/index.js"
   },
   "files": [

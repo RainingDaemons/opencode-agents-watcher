@@ -1,5 +1,7 @@
 #!/usr/bin/env bun
-// Compiles src/index.tsx -> dist/index.js for the opencode TUI plugin loader.
+// Compiles the package parts for the OpenCode v2 plugin loader:
+//   src/server.ts  -> dist/server.js (package export "." — no-op server part)
+//   src/index.tsx  -> dist/index.js  (package export "./tui" — sidebar UI)
 // Runtime module ids are baked in at build time using the host's scheme
 // (`opentui:runtime-module:${encodeURIComponent(spec)}`) — the same ids the
 // host itself produces when it transforms a file plugin at load. The baked ids
@@ -24,12 +26,12 @@ const RUNTIME_SPECIFIERS = new Set([
   "solid-js/store",
 ])
 
-// OpenCode resolves its plugin runtime for TUI packages at load time, so keep
-// the specifier bare instead of bundling (or baking a runtime module id for) it.
-const HOST_SPECIFIERS = new Set(["@opencode/plugin/tui"])
+// OpenCode resolves its plugin runtime at load time, so keep these specifiers
+// bare instead of bundling (or baking a runtime module id for) them.
+const HOST_SPECIFIERS = new Set(["@opencode/plugin", "@opencode/plugin/tui"])
 
 const result = await Bun.build({
-  entrypoints: ["./src/index.tsx"],
+  entrypoints: ["./src/index.tsx", "./src/server.ts"],
   outdir: "./dist",
   format: "esm",
   target: "bun",

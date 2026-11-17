@@ -40,23 +40,32 @@ The utility is designed to observe sub-agent behavior, provide guarded restart c
 
 ## Installation
 
-If you have OpenCode 1.18.0 or later, install the plugin with:
-
-```
-opencode plugin add opencode-agents-watcher@opencode-v1
-```
-
-For OpenCode v2:
+For OpenCode v2 (0.2.x):
 
 ```
 opencode plugin add opencode-agents-watcher@latest
 ```
 
+If you have OpenCode 1.18.0 or later (0.1.x):
+
+```
+opencode plugin add opencode-agents-watcher@opencode-v1
+```
+
 ## Manual installation
 
-Add the package to `~/.config/opencode/opencode.json` (global) or `opencode.json` (project):
+Add the package to `opencode.json` (project) or `~/.config/opencode/opencode.json` (global). The package ships a server part so the OpenCode server can resolve it, and the CLI loads its TUI part automatically:
 
-If you have OpenCode 1.18.0 or later, install the plugin with:
+```json
+{
+  "$schema": "https://opencode.ai/config.json",
+  "plugins": ["opencode-agents-watcher@0.2.1"]
+}
+```
+
+Restart OpenCode after changing the configuration.
+
+For OpenCode 1.18.0 or later, use the v1 package and the `plugin` key:
 
 ```json
 {
@@ -64,15 +73,7 @@ If you have OpenCode 1.18.0 or later, install the plugin with:
 }
 ```
 
-For OpenCode v2:
-
-```json
-{
-  "plugin": ["opencode-agents-watcher@0.2.x"]
-}
-```
-
-OpenCode loads the TUI part of the package automatically. Restart OpenCode after changing the configuration.
+Versions before `0.2.1` had no server part, so v2 could only load them from `~/.config/opencode/cli.json`. Use `0.2.1` or later to reference the package from `opencode.json`.
 
 Upgrading from `0.1.x`: rename the `plugin` key to `plugins`, and use a directory for local plugin paths (for example `.opencode/plugins/agents-watcher/tui.tsx`).
 
@@ -126,6 +127,7 @@ Use `/aw-cleanup` when you want to remove all persisted watcher records for the 
 
 ## How it works
 
+- Ships a no-op server part (`exports["."]`) so one `opencode.json` entry resolves the package; the sidebar itself is the TUI part (`exports["./tui"]`).
 - Registers through the official `sidebar.content` TUI slot.
 - Tracks child sessions from the OpenCode v2 session data cache and event stream.
 - Combines live session status with message content to show activity and the latest tool.
