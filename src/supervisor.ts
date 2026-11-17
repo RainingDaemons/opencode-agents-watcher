@@ -54,11 +54,7 @@ export type SessionDetails = {
 
 export type RecoveryClient = {
   abortSession(sessionID: string): Promise<void>
-  promptSession(
-    sessionID: string,
-    text: string,
-    options?: { agent?: string; model?: { providerID: string; modelID: string } },
-  ): Promise<void>
+  promptSession(sessionID: string, text: string): Promise<void>
   createChildSession(input: {
     parentID: string
     title?: string
@@ -224,15 +220,6 @@ function parseModel(value: string): { providerID: string; modelID: string } | un
   const index = value.indexOf("/")
   if (index <= 0 || index >= value.length - 1) return undefined
   return { providerID: value.slice(0, index), modelID: value.slice(index + 1) }
-}
-
-function promptOptions(record: AgentRecord) {
-  const model = parseModel(record.model)
-  if (!record.agent && !model) return undefined
-  return {
-    agent: record.agent || undefined,
-    model,
-  }
 }
 
 type Supervisor = ReturnType<typeof createSupervisor>
@@ -598,14 +585,14 @@ export function createSupervisor(deps: SupervisorDeps) {
           config.maxRestarts,
         )
         await withTimeout(
-          deps.client.promptSession(created.id, prompt, promptOptions(record)),
+          deps.client.promptSession(created.id, prompt),
           PROMPT_TIMEOUT_MS,
           "recovery prompt",
         )
         finishNewSession(record, created.id)
       } else {
         await withTimeout(
-          deps.client.promptSession(record.session_id, RESUME_PROMPT, promptOptions(record)),
+          deps.client.promptSession(record.session_id, RESUME_PROMPT),
           PROMPT_TIMEOUT_MS,
           "recovery prompt",
         )

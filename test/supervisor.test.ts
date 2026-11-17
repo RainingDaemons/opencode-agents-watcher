@@ -79,7 +79,6 @@ function harness(options: {
   let status: LiveStatus = options.status ?? "busy"
   const calls = { abort: 0, prompt: 0, create: 0 }
   const prompts: string[] = []
-  const promptOptions: unknown[] = []
   const memory = memoryStore()
   const snapshot: ConfigSnapshot = {
     config: config(options.overrides),
@@ -102,10 +101,9 @@ function harness(options: {
         if (options.abortError) throw options.abortError
         status = "idle"
       },
-      async promptSession(_sessionID, text, opts) {
+      async promptSession(_sessionID, text) {
         calls.prompt += 1
         prompts.push(text)
-        promptOptions.push(opts)
         if (options.promptError) throw options.promptError
       },
       async createChildSession() {
@@ -129,7 +127,6 @@ function harness(options: {
     supervisor,
     calls,
     prompts,
-    promptOptions,
     memory,
     snapshot,
     record: () => supervisor.record(CHILD)!,
@@ -225,7 +222,6 @@ describe("supervisor recovery", () => {
 
     expect(h.calls).toEqual({ abort: 1, prompt: 1, create: 0 })
     expect(h.prompts[0]).toBe(RESUME_PROMPT)
-    expect(h.promptOptions[0]).toEqual({ agent: "test", model: { providerID: "provider", modelID: "model" } })
     const current = h.record()
     expect(current.restart_count).toBe(1)
     expect(current.status).toBe("recovering")
